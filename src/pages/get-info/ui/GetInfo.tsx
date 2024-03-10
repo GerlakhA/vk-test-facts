@@ -1,15 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDebounce } from '../../../app/hooks/useDebounce'
 import { IInfo } from '../model/types/info.type'
-import { schema } from '../schema/schema'
+import { schema } from '../model/types/schema'
 
 export const GetInfo = () => {
 	const [name, setName] = useState('')
 	const [age, setAge] = useState(0)
+	// const [isLoading, setIsLoading] = useState(false)
 
 	const debouncedName = useDebounce(name, 3000)
 	const {
@@ -48,6 +49,14 @@ export const GetInfo = () => {
 		}
 	}
 
+	useEffect(() => {
+		const prevName = name
+
+		if (name !== prevName) {
+			submit()
+		}
+	}, [name])
+
 	return (
 		<div className='flex flex-col justify-center items-center p-2'>
 			<div className='p-4 flex justify-center items-center'>
@@ -65,6 +74,7 @@ export const GetInfo = () => {
 					/>
 					<button
 						type='submit'
+						// disabled={isLoading}
 						className='bg-green-500 hover:bg-green-500/60 transition-colors rounded-lg p-2 mb-4 ml-2'
 					>
 						Узнать возраст
