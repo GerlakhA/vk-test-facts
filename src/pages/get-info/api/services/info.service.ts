@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IInfo } from '../pages/get-info/model/info.type'
+import { IInfo } from '../../model/types/info.type'
 
 export const infoService = {
 	async getInfo(name: string) {

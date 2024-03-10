@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
-import { IFact } from './model/facts.type'
+import { IFact } from '../model/types/facts.type'
 
-export const FactsPage = () => {
+export const CatFacts = () => {
 	const [fact, setFact] = useState('')
 	const [cursorPosition, setCursorPosition] = useState(0)
 	const textAreaRef = useRef<HTMLTextAreaElement>(null)

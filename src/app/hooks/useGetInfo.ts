@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { infoService } from '../../services/info.service'
+import { infoService } from '../../pages/cat-facts/api/services/info.service'
 
 export const useGetInfo = (name: string) => {
 	const { data: getInfo } = useQuery({

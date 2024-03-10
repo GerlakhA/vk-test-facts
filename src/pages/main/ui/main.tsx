@@ -3,7 +3,7 @@ import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui'
 import '@vkontakte/vkui/dist/vkui.css'
 
 import { createRoot } from 'react-dom/client'
-import App from './App'
+import App from '../../../app/layouts/App'
 import './index.css'
 
 const client = new QueryClient({

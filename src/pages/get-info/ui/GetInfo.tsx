@@ -3,18 +3,11 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { useDebounce } from '../../app/hooks/useDebounce'
-import { IInfo } from './model/info.type'
+import { useDebounce } from '../../../app/hooks/useDebounce'
+import { IInfo } from '../model/types/info.type'
+import { schema } from '../schema/schema'
 
-const schema = yup.object({
-	name: yup
-		.string()
-		.required('Имя обязательное поле! И имя должно содержать минимум 3 символа')
-		.min(3)
-})
-
-export const GetInfoPage = () => {
+export const GetInfo = () => {
 	const [name, setName] = useState('')
 	const [age, setAge] = useState(0)
 
@@ -30,8 +23,8 @@ export const GetInfoPage = () => {
 		resolver: yupResolver(schema)
 	})
 
-	const { mutate, mutateAsync } = useMutation({
-		mutationKey: ['info', debouncedName],
+	const { mutateAsync } = useMutation({
+		mutationKey: ['info', name],
 		mutationFn: async () => {
 			let res = await axios.get<IInfo>(
 				`https://api.agify.io/?name=${encodeURIComponent(debouncedName)}`
@@ -44,37 +37,33 @@ export const GetInfoPage = () => {
 		}
 	})
 
-	const submit = async (e: any) => {
-		await mutateAsync()
-			.then(data => setAge(data.age))
-			.catch(error => {
-				console.error(error)
-			})
-
-		// e.preventDefault()
+	const submit = async () => {
+		if (name.length > 0) {
+			const response = await mutateAsync()
+			if (response && response.age) {
+				setAge(response.age)
+			} else {
+				console.error('Ошибка при получении данных')
+			}
+		}
 	}
 
 	return (
-		<div className='flex justify-center items-center p-2'>
+		<div className='flex flex-col justify-center items-center p-2'>
 			<div className='p-4 flex justify-center items-center'>
 				<form onSubmit={handleSubmit(submit)} {...register} className=''>
 					<input
-						// ref={textAreaRef}
 						value={name}
 						{...register('name', {
 							minLength: 3
 						})}
 						className='p-2 w-[250px] rounded-md'
 						placeholder='Введите имя'
-						onChange={e => setName(e.target.value)}
+						onChange={e => {
+							setName(e.target.value)
+						}}
 					/>
-					{errors.name && (
-						<p className='text-red-500 text-sm flex justify-center w-[250px]'>
-							{errors.name.message}
-						</p>
-					)}
 					<button
-						// ref={buttonRef}
 						type='submit'
 						className='bg-green-500 hover:bg-green-500/60 transition-colors rounded-lg p-2 mb-4 ml-2'
 					>
@@ -82,11 +71,18 @@ export const GetInfoPage = () => {
 					</button>
 				</form>
 			</div>
-			{age !== 0 && !errors ? (
-				<span className='text-sm font-semibold text-white'>
-					Возраст : {age}
-				</span>
-			) : null}
+			{errors.name && (
+				<p className='text-red-500 flex justify-center text-xl font-semibold'>
+					{errors.name.message}
+				</p>
+			)}
+			{name && (
+				<div className='flex justify-center items-center'>
+					<span className='text-xl font-semibold text-white'>
+						Возраст {name}: {age} лет
+					</span>
+				</div>
+			)}
 		</div>
 	)
 }

@@ -1,8 +1,8 @@
 import { Icon28UserOutline } from '@vkontakte/icons'
 import { AppRoot, Cell, Group, Panel, PanelHeader, View } from '@vkontakte/vkui'
 import { useState } from 'react'
-import { FactsPage } from './pages/facts'
-import { GetInfoPage } from './pages/get-info'
+import { CatFacts } from '../../pages/cat-facts/ui/CatFacts'
+import { GetInfo } from '../../pages/get-info/ui/GetInfo'
 
 function App() {
 	const [activePanel, setActivePanel] = useState('1')
@@ -11,7 +11,7 @@ function App() {
 			<View activePanel={activePanel}>
 				<Panel id='1'>
 					<PanelHeader>Facts Page</PanelHeader>
-					<FactsPage />
+					<CatFacts />
 					<Group>
 						<Cell
 							expandable='auto'
@@ -24,7 +24,7 @@ function App() {
 				</Panel>
 				<Panel id='2'>
 					<PanelHeader>GetInfo Page</PanelHeader>
-					<GetInfoPage />
+					<GetInfo />
 					<Group>
 						<Cell
 							expandable='auto'
