@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useEffect, useRef, useState } from 'react'
-import { IFact } from '../../types/facts.type'
+import { IFact } from './model/facts.type'
 
 export const FactsPage = () => {
 	const [fact, setFact] = useState('')

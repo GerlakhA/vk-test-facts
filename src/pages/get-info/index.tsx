@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useDebounce } from '../../app/hooks/useDebounce'
-import { IInfo } from '../../types/info.type'
+import { IInfo } from './model/info.type'
 
 const schema = yup.object({
 	name: yup
