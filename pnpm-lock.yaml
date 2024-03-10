@@ -11,6 +11,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.25.0
     version: 5.25.0(react@18.2.0)
+  '@vkontakte/icons':
+    specifier: ^2.101.0
+    version: 2.101.0(react@18.2.0)
   '@vkontakte/vkui':
     specifier: ^6.0.1
     version: 6.0.1(react-dom@18.2.0)(react@18.2.0)

@@ -15,59 +15,54 @@ export const FactsPage = () => {
 			const response = await axios.get<IFact>('https://catfact.ninja/fact')
 			return response.data
 		},
-		onMutate: () => {
-			setFact('')
-		},
 		onSuccess: data => {
 			setFact(data.fact)
 
 			textAreaRef.current?.focus()
-			setCursorPosition(fact.indexOf(' ') + 1)
 		}
 	})
 
 	const handleClick = () => {
 		mutate()
-		if (buttonRef.current) {
-			const firstWordIndex = fact.indexOf(' ')
-			if (firstWordIndex !== -1) {
-				textAreaRef.current?.setSelectionRange(
-					firstWordIndex + 1,
-					firstWordIndex + 1
-				)
-				textAreaRef.current?.focus()
-			} else {
-				textAreaRef.current?.setSelectionRange(0, 0)
-			}
-		}
 	}
 
 	useEffect(() => {
-		setFact('')
-
 		if (fact) {
 			const words = fact.split(' ')
-			setFact(fact)
 			setCursorPosition(words.length)
+		}
+	}, [fact])
+
+	useEffect(() => {
+		if (fact && textAreaRef.current) {
+			const firstWordIndex = fact.indexOf(' ')
+			if (firstWordIndex !== -1) {
+				textAreaRef.current.setSelectionRange(
+					firstWordIndex + 1,
+					firstWordIndex + 1
+				)
+			} else {
+				textAreaRef.current.setSelectionRange(0, 0)
+			}
 		}
 	}, [fact])
 
 	return (
 		<div className='flex justify-center'>
-			<div className='flex flex-col w-[500px] min-h-[250px] gap-6 justify-center items-center'>
+			<div className='flex flex-col w-[500px] gap-6 justify-center items-center'>
 				<textarea
 					ref={textAreaRef}
 					value={fact}
-					readOnly
 					onChange={() => setFact(fact)}
-					onFocus={() => setCursorPosition(cursorPosition + 1)}
+					onFocus={() => setCursorPosition(fact.indexOf(' ') + 1)}
 					onBlur={() => setCursorPosition(0)}
-					className='p-2 w-full'
+					className='p-2 w-full min-h-[250px]'
+					placeholder='Нажми на кнопку чтобы получить факт'
 				/>
 				<button
 					ref={buttonRef}
 					onClick={handleClick}
-					className='bg-green-500 w-full ml-4 rounded-md hover:bg-green-500/60 transition-colors p-1'
+					className='bg-green-500 w-full rounded-md hover:bg-green-500/60 transition-colors p-1 mb-4'
 				>
 					Получить факт
 				</button>
