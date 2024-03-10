@@ -24,6 +24,22 @@ export const GetInfo = () => {
 		resolver: yupResolver(schema)
 	})
 
+	// const { data } = useQuery({
+	// 	queryKey: ['info', name],
+	// 	queryFn: async () => {
+	// 		let res = await axios.get<IInfo>(
+	// 			`https://api.agify.io/?name=${encodeURIComponent(debouncedName)}`
+	// 		)
+	// 		return res.data
+	// 	}
+	// })
+
+	// const submit = () => {
+	// 	if (data && data.age) {
+	// 		setAge(data?.age)
+	// 	}
+	// }
+
 	const { mutateAsync } = useMutation({
 		mutationKey: ['info', name],
 		mutationFn: async () => {

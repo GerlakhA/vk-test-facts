@@ -3,7 +3,7 @@
 1. склонировать репозиторий и перейти в папку проекта:
 
 ```bash
-https://github.com/GerlakhA/vk-test-facts && cd vk-test-facts
+https://github.com/GerlakhA/vk-test-facts.git && cd vk-test-facts
 ```
 
 2. Перед тем как запустить проект, нужно установить все зависимости:
