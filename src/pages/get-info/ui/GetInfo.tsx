@@ -49,7 +49,7 @@ export const GetInfo = () => {
 	return (
 		<div className='flex flex-col justify-center items-center p-2'>
 			<div className='p-4 flex justify-center items-center'>
-				<form onSubmit={handleSubmit(submit)} {...register('name')}>
+				<form onSubmit={handleSubmit(submit)} {...register}>
 					<input
 						{...register('name', {
 							required: true
