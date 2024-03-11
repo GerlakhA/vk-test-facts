@@ -34,8 +34,12 @@ export const GetInfo = () => {
 			if (errors.name) {
 				return null
 			}
-			let res = await axios.get<IInfo>(searchURL)
-			return res.data
+			if (debouncedName) {
+				let res = await axios.get<IInfo>(searchURL)
+				return res.data
+			} else {
+				return null
+			}
 		}
 	})
 
