@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -11,8 +11,12 @@ export const GetInfo = () => {
 	const [name, setName] = useState('')
 	const [age, setAge] = useState(0)
 	// const [isLoading, setIsLoading] = useState(false)
-
 	const debouncedName = useDebounce(name, 3000)
+
+	const searchURL = debouncedName
+		? `https://api.agify.io/?name=${debouncedName}`
+		: ''
+
 	const {
 		register,
 		handleSubmit,
@@ -24,46 +28,44 @@ export const GetInfo = () => {
 		resolver: yupResolver(schema)
 	})
 
-	// const { data } = useQuery({
-	// 	queryKey: ['info', name],
-	// 	queryFn: async () => {
+	const { data } = useQuery({
+		queryKey: ['info', debouncedName],
+		queryFn: async () => {
+			let res = await axios.get<IInfo>(searchURL)
+			return res.data
+		}
+	})
+
+	const submit = () => {
+		if (data && data.age) {
+			setAge(data?.age)
+		}
+	}
+
+	// const { mutateAsync } = useMutation({
+	// 	mutationKey: ['info', name],
+	// 	mutationFn: async () => {
 	// 		let res = await axios.get<IInfo>(
 	// 			`https://api.agify.io/?name=${encodeURIComponent(debouncedName)}`
 	// 		)
 	// 		return res.data
+	// 	},
+	// 	onMutate: () => {},
+	// 	onSuccess: data => {
+	// 		setAge(data.age)
 	// 	}
 	// })
 
-	// const submit = () => {
-	// 	if (data && data.age) {
-	// 		setAge(data?.age)
+	// const submit = async () => {
+	// 	if (name.length > 0) {
+	// 		const response = await mutateAsync()
+	// 		if (response && response.age) {
+	// 			setAge(response.age)
+	// 		} else {
+	// 			console.error('Ошибка при получении данных')
+	// 		}
 	// 	}
 	// }
-
-	const { mutateAsync } = useMutation({
-		mutationKey: ['info', name],
-		mutationFn: async () => {
-			let res = await axios.get<IInfo>(
-				`https://api.agify.io/?name=${encodeURIComponent(debouncedName)}`
-			)
-			return res.data
-		},
-		onMutate: () => {},
-		onSuccess: data => {
-			setAge(data.age)
-		}
-	})
-
-	const submit = async () => {
-		if (name.length > 0) {
-			const response = await mutateAsync()
-			if (response && response.age) {
-				setAge(response.age)
-			} else {
-				console.error('Ошибка при получении данных')
-			}
-		}
-	}
 
 	useEffect(() => {
 		const prevName = name
@@ -102,10 +104,10 @@ export const GetInfo = () => {
 					{errors.name.message}
 				</p>
 			)}
-			{name && (
+			{data?.age && (
 				<div className='flex justify-center items-center'>
 					<span className='text-xl font-semibold text-white'>
-						Возраст {name}: {age} лет
+						Возраст {data?.name}: {data?.age} лет
 					</span>
 				</div>
 			)}
