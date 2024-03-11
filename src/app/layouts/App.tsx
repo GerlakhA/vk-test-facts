@@ -23,7 +23,7 @@ function App() {
 					</Group>
 				</Panel>
 				<Panel id='2'>
-					<PanelHeader>GetInfo Page</PanelHeader>
+					<PanelHeader>Info Page</PanelHeader>
 					<GetInfo />
 					<Group>
 						<Cell

@@ -15,6 +15,7 @@ export const GetInfo = () => {
 		watch,
 		formState: { errors }
 	} = useForm({
+		mode: 'onChange',
 		defaultValues: {
 			name: ''
 		},
